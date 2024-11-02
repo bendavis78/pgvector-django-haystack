@@ -1,0 +1,141 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-haystack"
+dynamic = ["version"]
+description = "An integration of pgvector-python's django support with Haystack"
+readme = "README.md"
+keywords = []
+authors = [{ name = "Ben Davis", email = "bdavis@oreilly.com" }]
+# TODO
+# requires-python = ">=3.8"
+# classifiers = [
+#   "Development Status :: 4 - Beta",
+#   "Programming Language :: Python",
+#   "Programming Language :: Python :: 3.8",
+#   "Programming Language :: Python :: 3.9",
+#   "Programming Language :: Python :: 3.10",
+#   "Programming Language :: Python :: 3.11",
+#   "Programming Language :: Python :: 3.12",
+#   "Programming Language :: Python :: Implementation :: CPython",
+#   "Programming Language :: Python :: Implementation :: PyPy",
+# ]
+dependencies = ["haystack-ai", "pgvector", "psycopg[binary]", "django"]
+
+# TODO
+# [project.urls]
+# Source = ""
+# Documentation = ""
+# Issues = ""
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/django_haystack"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+git_describe_command = 'git describe --tags"'
+
+[tool.hatch.envs.default]
+installer = "uv"
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+  "pytest-rerunfailures",
+  "ipython",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+test-cov-retry = "test-cov --reruns 3 --reruns-delay 30 -x"
+cov-report = ["- coverage combine", "coverage report"]
+cov = ["test-cov", "cov-report"]
+cov-retry = ["test-cov-retry", "cov-report"]
+# docs = ["pydoc-markdown pydoc/config.yml"]
+
+# TODO
+# [[tool.hatch.envs.all.matrix]]
+# python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.lint]
+installer = "uv"
+detached = true
+dependencies = ["pip", "black>=23.1.0", "mypy>=1.0.0", "ruff>=0.0.243"]
+
+[tool.hatch.envs.lint.scripts]
+typing = "mypy --install-types --non-interactive --explicit-package-bases {args:src/ tests}"
+style = ["ruff check {args:.}", "black --check --diff {args:.}"]
+fmt = ["black {args:.}", "ruff check --fix {args:.}", "style"]
+all = ["style", "typing"]
+
+[tool.black]
+target-version = ["py38"]
+line-length = 99
+
+[tool.ruff]
+# target-version = "py38"  # TODO
+line-length = 99
+
+[tool.ruff.lint]
+select = [
+  "A",
+  "ARG",
+  "B",
+  "C",
+  "DTZ",
+  "E",
+  "EM",
+  "F",
+  "FBT",
+  "I",
+  "ICN",
+  "ISC",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "S",
+  "T",
+  "TID",
+  "UP",
+  "W",
+  "YTT",
+]
+ignore = [
+]
+unfixable = [
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests can use magic values, assertions, and relative imports
+"tests/**/*" = ["PLR2004", "S101", "TID252"]
+# examples can contain "print" commands
+"examples/**/*" = ["T201"]
+
+
+[tool.coverage.run]
+source = ["django_haystack"]
+
+[tool.coverage.report]
+omit = ["*/tests/*", "*/__init__.py"]
+show_missing = true
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[tool.pytest.ini_options]
+markers = ["integration: integration tests"]
+
+
+[[tool.mypy.overrides]]
+module = [
+  "haystack.*",
+  "pgvector.*",
+  "psycopg.*",
+  "pytest.*",
+]
