@@ -46,7 +46,7 @@ class MyDocument(HaystackDocumentStoreModel):
 A haystack [Document] can be converted to a model instance using the
 `from_haystack_document` class method:
 
-```
+```python
 from haystack.dataclasses import Document
 
 doc = Document(content="Hello World!")
@@ -57,7 +57,7 @@ db_doc.save()
 Conversly, a `HaystackDocumentStoreModel` can be converted to a 
 haystack [Document] instance using the `.to_haystack_document()` model method:
 
-```
+```python
 db_doc = MyDocument.objects.get(id=some_document_id)
 haystack_doc = db_doc.to_haystack_document()
 ```
@@ -74,7 +74,7 @@ By default, the following fields are mapped from your model to the Haystack [Doc
 You can re-map any of these fields by declaring `{name}_field` in the
 `HaystackOptions` class in your model definition:
 
-```
+```python
 class MyDocument(HaystackDocumentStoreModel):
     id = fields.UUIDField(primary_key=True)
     haystack_id = fields.CharField(unique=True)
@@ -103,7 +103,7 @@ the "Retrievers" section below for more info.
 You can declare the default vector function used for lookups on the model's
 `HaystackOptions` class:
 
-```
+```python
 class MyDocument(HaystackDocumentStoreModel):
     id = fields.UUIDField(primary_key=True)
     haystack_id = fields.CharField(unique=True)
@@ -130,7 +130,7 @@ The `DjangoModelDocumentStore` follows the haystack [document store] spec.
 You can save Haystack documents to the document store by calling
 `write_documents()`:
 
-```
+```python
 from haystack.dataclasses import Document
 from django_haystack.document_store import DjangoModelDocumentStore
 
@@ -148,7 +148,7 @@ Two retriever components are included: a `DjangoModelEmbeddingRetriever` and a
 `DjangoModelKeywordRetriever`. These can be used in a [Pipeline] to retrieve
 documents from the document store. A retriever takes 
 
-```
+```python
 from django_haystack.document_store import DjangoModelDocumentStore
 from django_haystack.retrievers import DjangoModelEmbeddingRetriever
 
@@ -172,7 +172,7 @@ declared on the model's `HaystackOptions` class. You can also pass a
 the `vector_function` argument. In any case, the vector function must be a class
 from [pgvector.django.functions]:
 
-```
+```python
 retriever = DjangoModelEmbeddingRetriever(
     document_store=document_store,
     vector_function=CosineDistance
