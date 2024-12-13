@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pgvector-django-haystack"
-dynamic = ["version"]
+version = "0.0.1"
 description = "An integration of pgvector-python's django support with Haystack"
 readme = "README.md"
 keywords = []
@@ -33,11 +33,6 @@ dependencies = ["haystack-ai", "pgvector", "psycopg[binary]", "django", "pytest-
 [tool.hatch.build.targets.wheel]
 packages = ["django_haystack"]
 
-[tool.hatch.version]
-source = "vcs"
-
-[tool.hatch.version.raw-options]
-git_describe_command = "git describe --tags"
 
 [tool.hatch.envs.default]
 installer = "uv"
