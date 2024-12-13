@@ -1,3 +1,4 @@
+import django
 import pytest
 from django.conf import settings
 
@@ -15,8 +16,13 @@ def pytest_configure():
         },
         INSTALLED_APPS=[
             "django.contrib.contenttypes",
-            "django.contrib.auth", 
+            "django.contrib.auth",
+            "django.contrib.postgres",  # Add this for SearchVector support
             "tests.testapp",
+            "django_haystack",  # Add this so Django finds our models
         ],
         USE_TZ=True,
     )
+    
+    # Initialize Django before running tests
+    django.setup()
