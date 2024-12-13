@@ -10,6 +10,7 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir hatch
 
+COPY .git .git
 COPY . .
 
 RUN hatch env create
