@@ -16,9 +16,11 @@ services:
       retries: 5
 
   tests:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - .:/app
     depends_on:
       db:
         condition: service_healthy
