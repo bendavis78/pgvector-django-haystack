@@ -22,7 +22,7 @@ authors = [{ name = "Ben Davis", email = "bdavis@oreilly.com" }]
 #   "Programming Language :: Python :: Implementation :: CPython",
 #   "Programming Language :: Python :: Implementation :: PyPy",
 # ]
-dependencies = ["haystack-ai", "pgvector", "psycopg[binary]", "django"]
+dependencies = ["haystack-ai", "pgvector", "psycopg[binary]", "django", "pytest-postgresql"]
 
 # TODO
 # [project.urls]
@@ -45,7 +45,8 @@ dependencies = [
   "coverage[toml]>=6.5",
   "pytest",
   "pytest-django",
-  "pytest-rerunfailures",
+  "pytest-postgresql",
+  "pytest-rerunfailures", 
   "ipython",
 ]
 
