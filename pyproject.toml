@@ -44,6 +44,7 @@ installer = "uv"
 dependencies = [
   "coverage[toml]>=6.5",
   "pytest",
+  "pytest-django",
   "pytest-rerunfailures",
   "ipython",
 ]
@@ -129,7 +130,11 @@ show_missing = true
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
 [tool.pytest.ini_options]
-markers = ["integration: integration tests"]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+markers = [
+    "django_db: Mark the test as using the database",
+    "integration: integration tests"
+]
 
 
 [[tool.mypy.overrides]]
