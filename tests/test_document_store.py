@@ -4,9 +4,9 @@ from haystack.dataclasses import Document
 from haystack.document_stores.errors import DuplicateDocumentError
 from haystack.document_stores.types import DuplicatePolicy
 from pgvector.django import L2Distance
+from testapp.models import BasicDocument, FullDocument
 
 from django_haystack.document_store import DjangoModelDocumentStore
-from tests.testapp.models import BasicDocument, FullDocument
 
 
 @pytest.fixture
