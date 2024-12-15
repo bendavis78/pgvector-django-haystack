@@ -175,12 +175,81 @@ class TestDjangoModelDocumentStore:
         assert docs[0].id == "doc1"
 
     @pytest.mark.django_db(transaction=True)
+    def test_embedding_retrieval_no_vector_function(self, document_store, sample_documents_with_embeddings):
+        document_store.write_documents(sample_documents_with_embeddings)
+
+        with pytest.raises(
+            ValueError,
+            match="A vector_function must be provided or defined on the model's HaystackOptions",
+        ):
+            document_store.embedding_retrieval(
+                query_embedding=[0.9, 0.1, 0.0],
+            )
+
+    @pytest.mark.django_db(transaction=True)
+    def test_embedding_retrieval_max_inner_product(
+        self, full_document_store, sample_documents_with_embeddings
+    ):
+        full_document_store.write_documents(sample_documents_with_embeddings)
+
+        results = full_document_store.embedding_retrieval(
+            query_embedding=[0.9, 0.1, 0.0],
+            top_k=2,
+            vector_function=MaxInnerProduct,
+        )
+
+        assert len(results) == 2
+        # Assert that doc1 has a higher score than doc2 because the query is more similar to doc1
+        assert results[0].id == "doc1"
+        assert results[1].id == "doc2"
+        assert results[0].score > results[1].score
+
+    @pytest.mark.django_db(transaction=True)
+    def test_embedding_retrieval_l2_distance(self, full_document_store, sample_documents_with_embeddings):
+        full_document_store.write_documents(sample_documents_with_embeddings)
+
+        results = full_document_store.embedding_retrieval(
+            query_embedding=[0.9, 0.1, 0.0],
+            top_k=1,
+            vector_function=L2Distance,
+        )
+
+        assert len(results) == 1
+        assert results[0].id == "doc1"
+        assert hasattr(results[0], "score")
+
+    @pytest.mark.django_db
+    def test_keyword_retrieval_with_filters(self, document_store, sample_documents):
+        document_store.write_documents(sample_documents)
+
+        filters = {
+            "operator": "AND",
+            "conditions": [
+                {
+                    "field": "meta__key1",
+                    "operator": "==",
+                    "value": "value1"
+                }
+            ]
+        }
+
+        results = document_store.keyword_retrieval(
+            query="content",
+            filters=filters,
+            top_k=2
+        )
+
+        assert len(results) == 1
+        assert results[0].id == "doc1"
+
+
+    @pytest.mark.django_db(transaction=True)
     def test_embedding_retrieval(self, full_document_store, sample_documents_with_embeddings):
         full_document_store.write_documents(sample_documents_with_embeddings)
-        
+
         # Query vector more similar to doc1
         query_embedding = [0.9, 0.1, 0.0]
-        
+
         results = full_document_store.embedding_retrieval(
             query_embedding=query_embedding,
             top_k=1,
@@ -193,12 +262,12 @@ class TestDjangoModelDocumentStore:
 
     def test_keyword_retrieval(self, document_store, sample_documents):
         document_store.write_documents(sample_documents)
-        
+
         results = document_store.keyword_retrieval(
             query="content 1",
             top_k=1
         )
-        
+
         assert len(results) == 1
         assert results[0].id == "doc1"
         assert hasattr(results[0], "score")
