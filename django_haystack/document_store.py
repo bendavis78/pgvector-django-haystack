@@ -51,7 +51,7 @@ class DjangoModelDocumentStore:
     @classmethod
     def from_dict(cls, config: dict[str, Any]) -> "DjangoModelDocumentStore":
         model = apps.get_model(*config["model"])
-        return cls(model=model)
+        return cls(model=model, language=config.get("language"))
 
     def count_documents(self) -> int:
         """
