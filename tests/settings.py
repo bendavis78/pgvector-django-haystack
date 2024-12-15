@@ -4,7 +4,7 @@ DATABASES = {
         "NAME": "test_pgvector_haystack",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "localhost",
+        "HOST": "db",
         "PORT": "5432",
     }
 }
