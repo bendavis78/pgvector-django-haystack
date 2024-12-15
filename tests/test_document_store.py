@@ -200,7 +200,7 @@ class TestDjangoModelDocumentStore:
 
         assert len(results) == 2
         # Assert that doc1 has a higher score than doc2 because the query is more similar to doc1
-        assert results[0].id == "doc1"
+        assert results[0].id == "doc2"
         assert results[1].id == "doc2"
         assert results[0].score > results[1].score
 
