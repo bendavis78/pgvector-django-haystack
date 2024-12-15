@@ -132,7 +132,7 @@ class TestDjangoModelDocumentStore:
             "operator": "AND",
             "conditions": [
                 {
-                    "field": "meta.key1",
+                    "field": "meta__key1",
                     "operator": "==",
                     "value": "value1"
                 }
