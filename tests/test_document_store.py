@@ -74,6 +74,19 @@ class TestDjangoModelDocumentStore:
         }
         assert document_store.to_dict() == expected_dict
 
+    def test_from_dict(self, document_store):
+        data = {
+            "model": (
+                document_store.model._meta.app_label,
+                document_store.model._meta.model_name,
+            ),
+            "language": "spanish",
+        }
+        new_document_store = DjangoModelDocumentStore.from_dict(data)
+        assert isinstance(new_document_store, DjangoModelDocumentStore)
+        assert new_document_store.model == document_store.model
+        assert new_document_store.language == "spanish"
+
     def test_haystack_options(self, document_store):
         assert hasattr(document_store.model, "_haystack")
         assert document_store.model._haystack.model == document_store.model
