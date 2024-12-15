@@ -1,11 +1,14 @@
-import os
 import pytest
-from django.conf import settings
-from django.core.management import call_command
+from django.apps import apps
+from django.db import connection
+from django.db.models.signals import pre_migrate
+
+
+def _pre_migration(sender, app_config, **kwargs):
+    with connection.cursor() as cursor:
+        cursor.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+
 
 @pytest.fixture(autouse=True, scope="session")
-def apply_migrations(django_db_setup, django_db_blocker):
-    with django_db_blocker.unblock():
-        call_command("migrate")
-
-
+def django_test_environment(django_test_environment):
+    pre_migrate.connect(_pre_migration, sender=apps.get_app_config("testapp"))

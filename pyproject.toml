@@ -45,6 +45,10 @@ dependencies = [
   "ipython",
 ]
 
+[tool.hatch.envs.default.env-vars]
+PYTHONPATH = ".:tests/test-project"
+DJANGO_SETTINGS_MODULE = "test_project.settings"
+
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
@@ -126,11 +130,11 @@ show_missing = true
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "tests.settings"
 markers = [
     "django_db: Mark the test as using the database",
     "integration: integration tests"
 ]
+norecursedirs = ["test_project"]
 
 
 [[tool.mypy.overrides]]

@@ -10,7 +10,13 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir hatch
 
-COPY .git .git
+# Copy only the files needed to set up the Hatch environment
+COPY pyproject.toml ./
+COPY README.md ./
+
+# Pre-create the Hatch environment and install dependencies
+RUN hatch env create
+
+# Copy the rest of the application
 COPY . .
 
-RUN hatch env create

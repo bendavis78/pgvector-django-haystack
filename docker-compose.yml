@@ -1,12 +1,14 @@
-version: '3.8'
-
 services:
   db:
-    image: ankane/pgvector:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.pgvector
     environment:
       POSTGRES_DB: test_pgvector_haystack
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init_pg.sql:/docker-entrypoint-initdb.d/init_pg.sql
     ports:
       - "5432:5432"
     healthcheck:
@@ -19,6 +21,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
     volumes:
       - .:/app
     depends_on:
@@ -29,5 +33,6 @@ services:
       POSTGRES_DB: test_pgvector_haystack
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
     entrypoint: hatch run test --
     command: /app
