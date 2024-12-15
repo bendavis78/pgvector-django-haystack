@@ -34,5 +34,5 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
-    entrypoint: hatch run test --
+    entrypoint: hatch run test-cov --
     command: /app

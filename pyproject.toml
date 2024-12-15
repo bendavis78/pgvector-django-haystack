@@ -51,7 +51,7 @@ DJANGO_SETTINGS_MODULE = "test_project.settings"
 
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
-test-cov = "coverage run -m pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests} && coverage report --show-missing"
 test-cov-retry = "test-cov --reruns 3 --reruns-delay 30 -x"
 cov-report = ["- coverage combine", "coverage report"]
 cov = ["test-cov", "cov-report"]
