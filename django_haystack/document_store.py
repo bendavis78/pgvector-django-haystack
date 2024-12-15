@@ -214,7 +214,7 @@ class DjangoModelDocumentStore:
         if queryset is None:
             queryset = self.get_queryset()
 
-        content_field = queryset.model._haystack_options.get_field("content")
+        content_field = queryset.model._haystack.get_field("content")
         top_k = top_k or self.top_k
 
         search_query = SearchQuery(query, config=self.language)
