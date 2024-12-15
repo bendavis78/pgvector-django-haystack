@@ -156,9 +156,9 @@ class TestDjangoModelDocumentStore:
         results = full_document_store.embedding_retrieval(
             query_embedding=query_embedding,
             top_k=1,
-            vector_function=L2Distance
+            vector_function=CosineDistance
         )
-        
+
         assert len(results) == 1
         assert results[0].id == "doc1"
         assert hasattr(results[0], "score")
