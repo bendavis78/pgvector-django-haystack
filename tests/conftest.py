@@ -2,6 +2,13 @@ import os
 import pytest
 from django.conf import settings
 
+@pytest.fixture(scope='session')
+def django_db_setup():
+    from django.conf import settings
+    settings.DATABASES['default']['TEST'] = {
+        'NAME': 'test_pgvector_haystack',
+    }
+
 def pytest_configure():
     """Configure Django settings for tests if not already configured"""
     if not settings.configured:
