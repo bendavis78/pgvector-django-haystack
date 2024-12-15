@@ -56,8 +56,12 @@ def sample_documents_with_embeddings():
 @pytest.mark.django_db
 class TestDjangoModelDocumentStore:
     def test_init(self, document_store):
-        assert document_store.model == BasicDocument
+        assert document_store.model._meta.model_name == BasicDocument._meta.model_name
         assert document_store.language == "english"
+
+    def test_haystack_options(self, document_store):
+        assert hasattr(document_store.model, "_haystack")
+        assert document_store.model._haystack.model == document_store.model
 
     def test_count_documents_empty(self, document_store):
         assert document_store.count_documents() == 0
