@@ -221,7 +221,7 @@ class DjangoModelDocumentStore:
         search_vector = SearchVector(content_field.name, config=self.language)
 
         queryset = queryset.annotate(score=SearchRank(search_vector, search_query))
-        queryset = queryset.order_by("-rank")
+        queryset = queryset.order_by("-score")
 
         if filters:
             queryset = queryset.apply_haystack_filters(filters)
