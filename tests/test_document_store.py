@@ -60,6 +60,10 @@ class TestDjangoModelDocumentStore:
         assert document_store.model._meta.model_name == BasicDocument._meta.model_name
         assert document_store.language == "english"
 
+    def test_init_default_language(self):
+        document_store = DjangoModelDocumentStore(model=BasicDocument)
+        assert document_store.language == "english"
+
     def test_haystack_options(self, document_store):
         assert hasattr(document_store.model, "_haystack")
         assert document_store.model._haystack.model == document_store.model
