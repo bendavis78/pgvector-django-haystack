@@ -128,7 +128,16 @@ class TestDjangoModelDocumentStore:
     def test_filter_documents(self, document_store, sample_documents):
         document_store.write_documents(sample_documents)
         
-        filters = {"meta.key1": "value1"}
+        filters = {
+            "operator": "AND",
+            "conditions": [
+                {
+                    "field": "meta.key1",
+                    "operator": "==",
+                    "value": "value1"
+                }
+            ]
+        }
         docs = document_store.filter_documents(filters)
         assert len(docs) == 1
         assert docs[0].id == "doc1"
