@@ -29,4 +29,5 @@ services:
       POSTGRES_DB: test_pgvector_haystack
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    command: hatch run test-cov-retry
+    entrypoint: hatch run test --
+    command: /app
