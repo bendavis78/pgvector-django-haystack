@@ -51,7 +51,7 @@ class DjangoModelDocumentStore:
     @classmethod
     def from_dict(cls, config: dict[str, Any]) -> "DjangoModelDocumentStore":
         model = apps.get_model(*config["model"])
-        return cls(model=model)
+        return cls(model=model, language=config.get("language"))
 
     def count_documents(self) -> int:
         """
@@ -214,14 +214,14 @@ class DjangoModelDocumentStore:
         if queryset is None:
             queryset = self.get_queryset()
 
-        content_field = queryset.model._haystack_options.get_field("content")
+        content_field = queryset.model._haystack.get_field("content")
         top_k = top_k or self.top_k
 
         search_query = SearchQuery(query, config=self.language)
         search_vector = SearchVector(content_field.name, config=self.language)
 
         queryset = queryset.annotate(score=SearchRank(search_vector, search_query))
-        queryset = queryset.order_by("-rank")
+        queryset = queryset.order_by("-score")
 
         if filters:
             queryset = queryset.apply_haystack_filters(filters)

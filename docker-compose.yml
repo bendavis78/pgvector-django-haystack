@@ -1,0 +1,38 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.pgvector
+    environment:
+      POSTGRES_DB: test_pgvector_haystack
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init_pg.sql:/docker-entrypoint-initdb.d/init_pg.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: test_pgvector_haystack
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    entrypoint: hatch run test-cov --
+    command: /app

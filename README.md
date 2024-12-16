@@ -8,6 +8,20 @@
 
 ## Usage
 
+### Create a migration to enable the pgvector extension
+
+myapp/migrations/0001_pgvector.py:
+
+```python
+from pgvector.django import VectorExtension
+
+class Migration(migrations.Migration):
+    operations = [
+        VectorExtension()
+    ]
+```
+
+
 ### Document store model
 
 First, define a model for the document store. At a minimum, you must define an
