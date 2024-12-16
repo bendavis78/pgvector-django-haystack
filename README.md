@@ -1,5 +1,9 @@
 # pgvector-django-haystack
 
+[![CI](https://github.com/bendavis78/pgvector-django-haystack/actions/workflows/ci.yml/badge.svg)](https://github.com/bendavis78/pgvector-django-haystack/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/pgvector-django-haystack.svg)](https://pypi.org/project/pgvector-django-haystack/)
+[![Python Version](https://img.shields.io/pypi/pyversions/pgvector-django-haystack.svg)](https://pypi.org/project/pgvector-django-haystack/)
+
 `pgvector-django-haystack` is an integration for the [Haystack] LLM orchestration framework. This package provides:
 
 - A Django model-backed [document store]
