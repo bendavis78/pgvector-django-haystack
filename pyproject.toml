@@ -9,26 +9,24 @@ description = "An integration of pgvector-python's django support with Haystack"
 readme = "README.md"
 keywords = []
 authors = [{ name = "Ben Davis", email = "bdavis@oreilly.com" }]
-# TODO
-# requires-python = ">=3.8"
-# classifiers = [
-#   "Development Status :: 4 - Beta",
-#   "Programming Language :: Python",
-#   "Programming Language :: Python :: 3.8",
-#   "Programming Language :: Python :: 3.9",
-#   "Programming Language :: Python :: 3.10",
-#   "Programming Language :: Python :: 3.11",
-#   "Programming Language :: Python :: 3.12",
-#   "Programming Language :: Python :: Implementation :: CPython",
-#   "Programming Language :: Python :: Implementation :: PyPy",
-# ]
+requires-python = ">=3.8"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
 dependencies = ["haystack-ai", "pgvector", "psycopg[binary]", "django", "pytest-postgresql"]
 
-# TODO
-# [project.urls]
-# Source = ""
-# Documentation = ""
-# Issues = ""
+[project.urls]
+Source = "https://github.com/bendavis78/pgvector-django-haystack"
+Documentation = "https://github.com/bendavis78/pgvector-django-haystack"
+Issues = "https://github.com/bendavis78/pgvector-django-haystack/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["django_haystack"]
@@ -58,9 +56,8 @@ cov = ["test-cov", "cov-report"]
 cov-retry = ["test-cov-retry", "cov-report"]
 # docs = ["pydoc-markdown pydoc/config.yml"]
 
-# TODO
-# [[tool.hatch.envs.all.matrix]]
-# python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.lint]
 installer = "uv"
